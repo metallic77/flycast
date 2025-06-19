@@ -919,8 +919,7 @@ static bool RenderFrame(void)
 	}
 	else
 	{
-		if (settings.rend.PowerVR2Filter && !pvrrc.isRenderFramebuffer)
-			postProcessor.SelectFramebuffer();
+		
 		glViewport(0, 0, screen_width, screen_height);
 	}
 
@@ -1025,8 +1024,7 @@ static bool RenderFrame(void)
 		}
 
 		DrawStrips();
-		if (settings.rend.PowerVR2Filter && !is_rtt)
-			postProcessor.Render(hw_render.get_current_framebuffer());
+	
 	}
 	else
 	{
@@ -1116,15 +1114,13 @@ struct glesrend : Renderer
       palette_updated = true;
       TexCache.Clear();
 
-      if (settings.rend.PowerVR2Filter)
-      	postProcessor.Init();
+    
 
       return true;
    }
 	void Resize(int w, int h) override { screen_width=w; screen_height=h; }
 	void Term() override
    {
-		postProcessor.Term();
 	   TexCache.Clear();
 
 	   gl_term();
