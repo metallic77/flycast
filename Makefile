@@ -252,6 +252,33 @@ else ifeq ($(platform), brick)
 	HAVE_LTCG = 0
 	CORE_DEFINES += -DLOW_END
 	LDFLAGS += -static-libgcc -static-libstdc++
+#######################################
+
+# Generic AArch64 Cortex-A35 OpenGL ES 2.0 target (R36s)
+# ATTENTION - RE-ENABLE POSTPROCESS TO COMPILE at the meantime
+else ifeq ($(platform), arm64_cortex_a35_gles2)
+	EXT ?= so
+	TARGET := $(TARGET_NAME)_libretro.$(EXT)
+	SHARED += -shared -Wl,--version-script=link.T
+	LDFLAGS +=  -Wl,--no-undefined
+	CC_AS    = ${CC_PREFIX}${CC} #The ngen_arm.S must be compiled with gcc, not as
+	fpic = -fPIC
+	LIBS += -lrt
+	ARM_FLOAT_ABI_HARD = 0
+	FORCE_GLES = 1
+	SINGLE_PREC_FLAGS = 1
+	CPUFLAGS += -DHOST_CPU=0x20000006 -DTARGET_LINUX_ARMv8 -frename-registers
+	CFLAGS += -O2 -mcpu=cortex-a35 -mtune=cortex-a35 $(CPUFLAGS)
+	CXXFLAGS +=-O2 -mcpu=cortex-a35 -mtune=cortex-a35 $(CPUFLAGS)
+	ASFLAGS += $(CFLAGS) -c -frename-registers -fno-strict-aliasing -ffast-math -ftree-vectorize
+	PLATFORM_EXT := unix
+	WITH_DYNAREC=arm64
+	HAVE_GENERIC_JIT = 0
+	HAVE_VULKAN = 0
+	HAVE_LTCG = 0
+	CORE_DEFINES += -DLOW_END
+
+
 
 # Classic Platforms #####################
 # Platform affix = classic_<ISA>_<µARCH>
