@@ -324,7 +324,7 @@ else ifeq ($(platform), classic_armv7_a7)
 	CORE_DEFINES += -DLOW_END -DLOW_RES
 #########################################
 # (armv8 a35, hard point, neon based) ###
-# PlayStation Classic
+# PlayStation Classic, R36s & clones 32 bit
 else ifeq ($(platform), classic_armv8_a35)
 	EXT    ?= so
 	TARGET := $(TARGET_NAME)_libretro.$(EXT)
@@ -334,20 +334,18 @@ else ifeq ($(platform), classic_armv8_a35)
 	ARM_FLOAT_ABI_HARD = 1
 	FORCE_GLES = 1
 	SINGLE_PREC_FLAGS = 1
-	HAVE_LTCG = 0
 	HAVE_OPENMP = 0
 	CFLAGS += -Ofast \
-	-fuse-linker-plugin \
 	-fno-stack-protector -fno-ident -fomit-frame-pointer \
 	-fmerge-all-constants -ffast-math -funroll-all-loops \
 	-marm -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 	CXXFLAGS += $(CFLAGS)
 	ASFLAGS += $(CFLAGS)
-	LDFLAGS += -marm -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -Ofast -flto -fuse-linker-plugin
+	LDFLAGS += -marm -mtune=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -Ofast 
 	PLATFORM_EXT := unix
 	WITH_DYNAREC = arm
 	HAVE_GENERIC_JIT = 0
-	CORE_DEFINES += -DLOW_END -DLOW_RES
+	CORE_DEFINES += -DLOW_END 
 	
 #########################################
 
